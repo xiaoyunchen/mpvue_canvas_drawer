@@ -1,6 +1,6 @@
 {
   "name": "mpvue-canvas-drawer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "mpvue版本canvas绘图组件",
   "main": "canvas_drawer.vue",
   "scripts": {

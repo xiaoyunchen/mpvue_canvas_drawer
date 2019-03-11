@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import canvasdrawer from '@/components/canvas_drawer'
+  import canvasdrawer from 'mpvue-canvas-drawer'
   const WIDTH = 346
   const HEIGHT = 284
   const CANVAS_VIEWS = [

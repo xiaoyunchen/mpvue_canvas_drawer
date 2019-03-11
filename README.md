@@ -1,41 +1,39 @@
 # mpvue_canvas_drawer
+> Fork自[mpvue_canvas_drawer](https://github.com/kuckboy1994/mpvue_canvas_drawer)
 
-把 `mp_canvas_drawer` 组件移动到 `mpvue` 项目的 `/static/` 目录下
+## how to use
 
-在调用页面的 `main.js` 文件最后加入如下代码
-
-```
-export default {
-  config: {
-    // 这儿添加要用的小程序组件
-    usingComponents: {
-      'canvasdrawer': '../../../static/canvasdrawer/canvasdrawer'
-    }
-  }
-}
-```
-
-就可以直接在 `mpvue` 中使用 `mp_canvas_drawer`
-```
-<img :src="shareImage" class="share-image" />
-<canvasdrawer :painting="painting" class="canvasdrawer" @getImage="eventGetImage"/>
-```
-
-
-## Build Setup
-
-``` bash
+``` vue
 # install dependencies
-npm install
+npm install mpvue-canvas-drawer
 
-# serve with hot reload at localhost:8080
-npm run dev
+# 引用注册组件
+import canvasdrawer from 'mpvue-canvas-drawer'
+<canvasdrawer :width="346" :height="284" ref="pic"/>
 
-# build for production with minification
-npm run build
+# 准备配置数据，绘制canvas
+this.$refs.pic.draw(CANVAS_VIEWS)
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# 将canvas导出图片到临时文件
+let tempPath = await this.$refs.pic.saveToTemp()
+console.log('tempPath:', tempPath)
 ```
+完整示例代码请参考 [demo](https://github.com/xiaoyunchen/mpvue_canvas_drawer/blob/master/src/pages/index/index.vue) 
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### options
+#### width
+> canvas宽度，单位px，默认值100
+
+#### height 
+> canvas高度，单位px，默认值100
+
+### 方法
+#### draw
+> 开始绘制方法，可由父组件直接调用
+
+> 参数：需要绘制的配置数据，配置文件参考demo
+
+
+
+#### saveToTemp
+> 保存绘制好的canvas图片到本地临时文件，返回临时文件地址
