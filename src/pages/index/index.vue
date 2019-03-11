@@ -1,293 +1,230 @@
 <template>
   <div class="container">
     <img :src="shareImage" class="share-image" />
-    <canvasdrawer :painting="painting" class="canvasdrawer" @getImage="eventGetImage"/>
+    <canvasdrawer :width="346" :height="284" ref="pic"/>
 
-    <button @click="eventDraw" class="btn">绘制</button>
-    <button @click="eventSave" class="btn">保存到本地</button>
+    <div class="btns">
+      <button @click="draw">绘制</button>
+      <button @click="save" class="save">保存到本地</button>
+      <button @click="refresh">再试一次</button>
+    </div>
   </div>
 </template>
 
 <script>
-// import card from '@/components/card'
-
-export default {
-  data () {
-    return {
-      shareImage: '',
-      painting: {}
-    }
-  },
-
-  mounted () {
-    // this.painting = {
-    //   width: 375,
-    //   height: 555,
-    //   clear: true,
-    //   views: [
-    //     {
-    //       type: 'image',
-    //       url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531103986231.jpeg',
-    //       top: 0,
-    //       left: 0,
-    //       width: 375,
-    //       height: 555
-    //     },
-    //     {
-    //       type: 'image',
-    //       url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epJEPdPqQVgv6D8bojGT4DrGXuEC4Oe0GXs5sMsN4GGpCegTUsBgL9SPJkN9UqC1s0iakjQpwd4h4A/132',
-    //       top: 27.5,
-    //       left: 29,
-    //       width: 55,
-    //       height: 55
-    //     },
-    //     {
-    //       type: 'image',
-    //       url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
-    //       top: 27.5,
-    //       left: 29,
-    //       width: 55,
-    //       height: 55
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '您的好友【kuckboy】',
-    //       fontSize: 16,
-    //       color: '#402D16',
-    //       textAlign: 'left',
-    //       top: 33,
-    //       left: 96,
-    //       bolder: true
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '发现一件好货，邀请你一起0元免费拿！',
-    //       fontSize: 15,
-    //       color: '#563D20',
-    //       textAlign: 'left',
-    //       top: 59.5,
-    //       left: 96
-    //     },
-    //     {
-    //       type: 'image',
-    //       url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg',
-    //       top: 136,
-    //       left: 42.5,
-    //       width: 290,
-    //       height: 186
-    //     },
-    //     {
-    //       type: 'image',
-    //       url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385433625.jpeg',
-    //       top: 443,
-    //       left: 85,
-    //       width: 68,
-    //       height: 68
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '正品MAC魅可口红礼盒生日唇膏小辣椒Chili西柚情人',
-    //       fontSize: 16,
-    //       lineHeight: 21,
-    //       color: '#383549',
-    //       textAlign: 'left',
-    //       top: 336,
-    //       left: 44,
-    //       width: 287,
-    //       MaxLineNumber: 2,
-    //       breakWord: true,
-    //       bolder: true
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '￥0.00',
-    //       fontSize: 19,
-    //       color: '#E62004',
-    //       textAlign: 'left',
-    //       top: 387,
-    //       left: 44.5,
-    //       bolder: true
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '原价:￥138.00',
-    //       fontSize: 13,
-    //       color: '#7E7E8B',
-    //       textAlign: 'left',
-    //       top: 391,
-    //       left: 110,
-    //       textDecoration: 'line-through'
-    //     },
-    //     {
-    //       type: 'text',
-    //       content: '长按识别图中二维码帮我砍个价呗~',
-    //       fontSize: 14,
-    //       color: '#383549',
-    //       textAlign: 'left',
-    //       top: 460,
-    //       left: 165.5,
-    //       lineHeight: 20,
-    //       MaxLineNumber: 2,
-    //       breakWord: true,
-    //       width: 125
-    //     }
-    //   ]
-    // }
-  },
-
-  methods: {
-    eventGetImage (event) {
-      console.log(event)
-      wx.hideLoading()
-      this.shareImage = event.target.tempFilePath
+  import canvasdrawer from '@/components/canvas_drawer'
+  const WIDTH = 346
+  const HEIGHT = 284
+  const CANVAS_VIEWS = [
+    {
+      type: 'rect',
+      background: '#fff',
+      top: 0,
+      left: 0,
+      width: WIDTH,
+      height: HEIGHT
     },
-    eventDraw () {
-      wx.showLoading({
-        title: '绘制分享图片中',
-        mask: true
-      })
-      this.painting = {
-        width: 375,
-        height: 555,
-        clear: true,
-        views: [
-          {
-            type: 'image',
-            url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531103986231.jpeg',
-            top: 0,
-            left: 0,
-            width: 375,
-            height: 555
-          },
-          {
-            type: 'image',
-            url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epJEPdPqQVgv6D8bojGT4DrGXuEC4Oe0GXs5sMsN4GGpCegTUsBgL9SPJkN9UqC1s0iakjQpwd4h4A/132',
-            top: 27.5,
-            left: 29,
-            width: 55,
-            height: 55
-          },
-          {
-            type: 'image',
-            url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
-            top: 27.5,
-            left: 29,
-            width: 55,
-            height: 55
-          },
-          {
-            type: 'text',
-            content: '您的好友【kuckboy】',
-            fontSize: 16,
-            color: '#402D16',
-            textAlign: 'left',
-            top: 33,
-            left: 96,
-            bolder: true
-          },
-          {
-            type: 'text',
-            content: '发现一件好货，邀请你一起0元免费拿！',
-            fontSize: 15,
-            color: '#563D20',
-            textAlign: 'left',
-            top: 59.5,
-            left: 96
-          },
-          {
-            type: 'image',
-            url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg',
-            top: 136,
-            left: 42.5,
-            width: 290,
-            height: 186
-          },
-          {
-            type: 'image',
-            url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385433625.jpeg',
-            top: 443,
-            left: 85,
-            width: 68,
-            height: 68
-          },
-          {
-            type: 'text',
-            content: '正品MAC魅可口红礼盒生日唇膏小辣椒Chili西柚情人',
-            fontSize: 16,
-            lineHeight: 21,
-            color: '#383549',
-            textAlign: 'left',
-            top: 336,
-            left: 44,
-            width: 287,
-            MaxLineNumber: 2,
-            breakWord: true,
-            bolder: true
-          },
-          {
-            type: 'text',
-            content: '￥0.00',
-            fontSize: 19,
-            color: '#E62004',
-            textAlign: 'left',
-            top: 387,
-            left: 44.5,
-            bolder: true
-          },
-          {
-            type: 'text',
-            content: '原价:￥138.00',
-            fontSize: 13,
-            color: '#7E7E8B',
-            textAlign: 'left',
-            top: 391,
-            left: 110,
-            textDecoration: 'line-through'
-          },
-          {
-            type: 'text',
-            content: '长按识别图中二维码帮我砍个价呗~',
-            fontSize: 14,
-            color: '#383549',
-            textAlign: 'left',
-            top: 460,
-            left: 165.5,
-            lineHeight: 20,
-            MaxLineNumber: 2,
-            breakWord: true,
-            width: 125
-          }
-        ]
+    {
+      type: 'image',
+      url: 'https://yxs-web.oss-cn-beijing.aliyuncs.com/9253c0000bf93786cf9b949d6ef0e387.png',
+      top: 0,
+      left: 0,
+      width: WIDTH,
+      height: 164 - 46
+    },
+    {
+      type: 'image',
+      url: '/static/1x1_bg.png',
+      top: 0,
+      left: 0,
+      width: WIDTH,
+      height: 164 - 46
+    },
+    {
+      type: 'text',
+      content: '【第二曲线模块】第一节：创新',
+      fontSize: 15,
+      color: '#fff',
+      textAlign: 'left',
+      top: 117 - 46,
+      left: 10,
+      width: 270,
+      bolder: true,
+      breakWord: true,
+      MaxLineNumber: 1
+    },
+    {
+      type: 'text',
+      content: '李善友 混沌大学创办人',
+      fontSize: 12,
+      color: '#fff',
+      textAlign: 'left',
+      top: 140 - 46,
+      left: 10,
+      width: 270,
+      breakWord: true,
+      MaxLineNumber: 1
+    },
+    {
+      type: 'image',
+      url: 'http://wx.qlogo.cn/mmhead/QnM5bMcic4Z3AB9xdZMyKhIn2EqgrlWSmQX7S2ppjkzUyfddPVZoMyg/64/0',
+      top: 182 - 46,
+      left: 13,
+      width: 38,
+      height: 38
+    },
+    {
+      type: 'image',
+      url: '/static/head_img_bg.png',
+      top: 181 - 46,
+      left: 12,
+      width: 40,
+      height: 40
+    },
+    {
+      type: 'text',
+      content: 'souvenir',
+      fontSize: 14,
+      lineHeight: 16,
+      color: '#333333',
+      textAlign: 'left',
+      top: 182 - 46,
+      left: 58,
+      width: 200
+    },
+    {
+      type: 'text',
+      content: '正在',
+      fontSize: 13,
+      lineHeight: 16,
+      color: '#848484',
+      textAlign: 'left',
+      top: 204 - 46,
+      left: 58,
+      width: 25
+    },
+    {
+      type: 'text',
+      content: ' 混沌大学 ',
+      fontSize: 13,
+      lineHeight: 16,
+      color: '#333333',
+      textAlign: 'left',
+      top: 204 - 46,
+      left: 85,
+      width: 38
+    },
+    {
+      type: 'text',
+      content: '学习这堂课',
+      fontSize: 13,
+      lineHeight: 16,
+      color: '#848484',
+      textAlign: 'left',
+      top: 204 - 46,
+      left: 145,
+      width: 80
+    },
+    {
+      type: 'rect',
+      background: '#ddd',
+      top: 236 - 46,
+      left: 18,
+      width: 254,
+      height: 1
+    },
+    {
+      type: 'image',
+      url: 'http://wx.qlogo.cn/mmhead/QnM5bMcic4Z3AB9xdZMyKhIn2EqgrlWSmQX7S2ppjkzUyfddPVZoMyg/64/0',
+      top: 252 - 46,
+      left: 20,
+      width: 70,
+      height: 70
+    },
+    {
+      type: 'text',
+      content: '下载【混沌大学】App',
+      fontSize: 12,
+      lineHeight: 16,
+      color: '#999999',
+      textAlign: 'left',
+      top: 267 - 46,
+      left: 98,
+      width: 150,
+      MaxLineNumber: 1
+    },
+    {
+      type: 'text',
+      content: '和我一起学习此课程',
+      fontSize: 12,
+      lineHeight: 16,
+      color: '#999999',
+      textAlign: 'left',
+      top: 289 - 46,
+      left: 98,
+      width: 150,
+      MaxLineNumber: 1
+    }]
+  export default {
+    components: {
+      canvasdrawer
+    },
+    data () {
+      return {
+        shareImage: ''
       }
     },
-    eventSave () {
-      wx.saveImageToPhotosAlbum({
-        filePath: this.shareImage,
-        success (res) {
-          wx.showToast({
-            title: '保存图片成功',
-            icon: 'success',
+    methods: {
+      async draw () {
+        wx.showLoading({
+          title: '绘制分享图片中',
+          mask: true
+        })
+        await this.$refs.pic.draw(CANVAS_VIEWS)
+        let tempPath = await this.$refs.pic.saveToTemp()
+        console.log('tempPath:', tempPath)
+        this.shareImage = tempPath
+        wx.hideLoading()
+      },
+      async save () {
+        if (!this.shareImage) {
+          return wx.showToast({
+            title: '请先绘制图片',
+            icon: 'none',
             duration: 2000
           })
         }
-      })
+        wx.saveImageToPhotosAlbum({
+          filePath: this.shareImage,
+          success () {
+            wx.showToast({
+              title: '保存图片成功',
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        })
+      },
+      refresh () {
+        wx.reLaunch({url: '/pages/index/main'})
+      }
     }
-  },
-
-  created () {
-    // 调用应用实例的方法获取全局数据
   }
-}
 </script>
 
 <style scoped>
-.share-image {
-  width: 600rpx;
-  height: 888rpx;
-  margin: 0 75rpx;
-  border: 1px solid black;
-}
-.btn {
-  width: 100%;
-}
+  .share-image {
+    width: 290px;
+    height: 284px;
+    margin: 0 auto;
+  }
+  .share-image[src=''] {
+    border: 1px dashed #d8d8d8;
+  }
+  .btns {
+    margin-top: 40rpx;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 </style>
