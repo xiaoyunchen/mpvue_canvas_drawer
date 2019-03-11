@@ -1,0 +1,23 @@
+{
+  "name": "mpvue-canvas-drawer",
+  "version": "1.0.0",
+  "description": "mpvue版本canvas绘图组件",
+  "main": "canvas_drawer.vue",
+  "scripts": {
+    "test": "null"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyunchen/mpvue_canvas_drawer.git"
+  },
+  "keywords": [
+    "mpvue",
+    "canvas"
+  ],
+  "author": "chenxiaoyun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoyunchen/mpvue_canvas_drawer/issues"
+  },
+  "homepage": "https://github.com/xiaoyunchen/mpvue_canvas_drawer#readme"
+}
